@@ -40,7 +40,6 @@ export function AutoMatchButton() {
   const autoMatch = () => {
     if (!state.requirementsFile) return;
 
-    // Use max bipartite matching via greedy score approach
     // Build score matrix: O(files * requirements)
     const scores: Array<{ fileId: string; reqId: string; score: number }> = [];
 
@@ -57,20 +56,19 @@ export function AutoMatchButton() {
       }
     }
 
-    // Greedy assignment: pick highest-score pairs, mark as used
+    // Greedy assignment: highest-score pairs first
     scores.sort((a, b) => b.score - a.score);
     const usedFiles = new Set<string>();
     const usedReqs = new Set<string>();
     let count = 0;
 
-    // Only assign if not already manually matched
     const alreadyMatched = new Set(
       state.requirementStates
         .filter(s => s.matchedFileId !== null)
         .map(s => s.requirement.id)
     );
 
-    for (const { fileId, reqId, score: _score } of scores) {
+    for (const { fileId, reqId } of scores) {
       if (usedFiles.has(fileId) || usedReqs.has(reqId)) continue;
       if (alreadyMatched.has(reqId)) continue;
 
@@ -91,14 +89,14 @@ export function AutoMatchButton() {
         variant="secondary"
         size="sm"
         onClick={autoMatch}
-        icon={<Wand2 size={14} />}
+        icon={<Wand2 size={13} />}
         style={{ width: '100%', justifyContent: 'center' }}
       >
         {t('auto_match')}
       </Button>
       {matchCount !== null && (
-        <p style={{ fontSize: '12px', color: 'var(--color-success-text)', textAlign: 'center', margin: 0 }}>
-          ✓ {t('auto_match_done')}: {matchCount} matched
+        <p style={{ fontSize: '11px', color: 'var(--color-success-text)', textAlign: 'center', margin: 0, fontWeight: 600 }}>
+          ✓ {matchCount} matched automatically
         </p>
       )}
     </div>

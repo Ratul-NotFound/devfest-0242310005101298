@@ -1,17 +1,17 @@
 'use client';
 
 // src/components/sections/HeroStrip.tsx
-// Compact hero banner with workflow steps and contextual info
+// Compact hero banner with workflow steps and real-time status
 
 import Image from 'next/image';
 import { useApp, useT } from '@/context/AppContext';
-import { FileJson, Upload, Link2, Package, ShieldCheck } from 'lucide-react';
+import { FileJson, Upload, Link2, Package, CheckCircle } from 'lucide-react';
 
 const STEPS = [
-  { icon: FileJson,    key: 'Load JSON',         sub: 'Requirements file'  },
-  { icon: Upload,      key: 'Upload PDFs',        sub: 'Drag & drop'        },
-  { icon: Link2,       key: 'Match & Validate',   sub: 'Real-time status'   },
-  { icon: Package,     key: 'Generate Package',   sub: 'Correct PDF order'  },
+  { icon: FileJson, key: 'Load JSON',       sub: 'Requirements file' },
+  { icon: Upload,   key: 'Upload PDFs',     sub: 'Drag & drop'       },
+  { icon: Link2,    key: 'Match & Validate', sub: 'Real-time status' },
+  { icon: Package,  key: 'Generate Package', sub: 'Correct PDF order' },
 ];
 
 export function HeroStrip() {
@@ -25,13 +25,13 @@ export function HeroStrip() {
   return (
     <div
       style={{
-        background: `linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-700) 60%, var(--color-primary-600) 100%)`,
+        background: 'linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-700) 60%, var(--color-primary-600) 100%)',
         borderBottom: '1px solid var(--color-primary-800)',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
-      {/* Background texture dots */}
+      {/* Background dots */}
       <div
         aria-hidden="true"
         style={{
@@ -45,14 +45,17 @@ export function HeroStrip() {
 
       <div
         className="container-app"
-        style={{
-          paddingTop: '20px',
-          paddingBottom: '20px',
-          position: 'relative',
-        }}
+        style={{ paddingTop: '20px', paddingBottom: '20px', position: 'relative' }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '24px', flexWrap: 'wrap' }}>
-
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '24px',
+            flexWrap: 'wrap',
+          }}
+        >
           {/* Left: Brand + Tagline */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div
@@ -101,7 +104,10 @@ export function HeroStrip() {
               >
                 {hasProject ? (
                   <>
-                    <ShieldCheck size={12} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }} />
+                    <CheckCircle
+                      size={12}
+                      style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }}
+                    />
                     {okCount}/{totalCount} requirements ready
                   </>
                 ) : (
@@ -111,14 +117,10 @@ export function HeroStrip() {
             </div>
           </div>
 
-          {/* Right: Workflow steps */}
+          {/* Right: Workflow steps (desktop only) */}
           <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-            }}
-            className="hidden lg:flex"
+            style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+            className="hidden-lg"
           >
             {STEPS.map((step, idx) => {
               const Icon = step.icon;
@@ -147,13 +149,19 @@ export function HeroStrip() {
                     </div>
                   </div>
                   {idx < STEPS.length - 1 && (
-                    <div style={{ width: '6px', height: '1px', background: 'rgba(255,255,255,0.3)', flexShrink: 0 }} />
+                    <div
+                      style={{
+                        width: '6px',
+                        height: '1px',
+                        background: 'rgba(255,255,255,0.3)',
+                        flexShrink: 0,
+                      }}
+                    />
                   )}
                 </div>
               );
             })}
           </div>
-
         </div>
       </div>
     </div>

@@ -118,6 +118,28 @@ export function GeneratePanel() {
           >
             {t('load_json_first')}
           </p>
+        ) : state.uploadedFiles.length === 0 ? (
+          <div
+            style={{
+              padding: '12px 14px',
+              background: 'var(--color-primary-50)',
+              border: '1px solid var(--color-primary-200)',
+              borderRadius: 'var(--radius-md)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '6px',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Package size={14} color="var(--color-primary-700)" />
+              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-primary-800)' }}>
+                Step 2: Upload PDF Files
+              </span>
+            </div>
+            <p style={{ fontSize: '11px', color: 'var(--color-primary-700)', margin: 0, lineHeight: 1.4 }}>
+              Upload your tender PDFs on the right to match each required document. All 8 mandatory items need a matching file.
+            </p>
+          </div>
         ) : blockingStates.length > 0 ? (
           <div
             style={{
@@ -128,6 +150,8 @@ export function GeneratePanel() {
               display: 'flex',
               flexDirection: 'column',
               gap: '8px',
+              maxHeight: '260px',
+              overflowY: 'auto',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
@@ -336,13 +360,6 @@ export function GeneratePanel() {
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }

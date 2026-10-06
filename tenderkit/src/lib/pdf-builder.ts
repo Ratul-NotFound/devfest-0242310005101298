@@ -31,7 +31,7 @@ function addFooter(
   totalPages: number,
   font: import('pdf-lib').PDFFont
 ): void {
-  const { width, height } = page.getSize();
+  const { width } = page.getSize();
   const text = `${tenderId}  |  Page ${pageNum} of ${totalPages}`;
   const textWidth = font.widthOfTextAtSize(text, FOOTER_FONT_SIZE);
 
@@ -309,9 +309,7 @@ export async function buildPackage(options: BuildPackageOptions): Promise<Uint8A
     currentPage += pageCount;
   }
 
-  const totalPages = currentPage - 1; // last currentPage is one past the end
-
-  // Build the final PDF
+  // Total pages = all source pages + cover (1) + index if enabled (1)
   const outputPdf = await PDFDocument.create();
 
   // 1. Cover page

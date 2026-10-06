@@ -1,4 +1,4 @@
-not// src/types/index.ts
+// src/types/index.ts
 // All shared TypeScript types for TenderKit
 
 export interface TenderInfo {

@@ -4,7 +4,7 @@
 // BONUS: Save/restore project state via localStorage
 
 import { useApp, useT } from '@/context/AppContext';
-import { Save, FolderOpen } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useState } from 'react';
 

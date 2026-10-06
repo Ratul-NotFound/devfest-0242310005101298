@@ -1,18 +1,19 @@
 'use client';
 
 // src/components/sections/RequirementsList.tsx
-// Show all requirements with status, match controls, and expiry date inputs
+// Requirements with status, match controls, and expiry inputs — premium design
 
 import { useApp, useT } from '@/context/AppContext';
 import { StatusBadge } from '@/components/ui/StatusBadge';
 import { RequirementState } from '@/types';
-import { Calendar, Link2, Link2Off } from 'lucide-react';
+import { Calendar, Link2, Link2Off, ListChecks, FileText } from 'lucide-react';
 
 export function RequirementsList() {
   const { state, setMatch, setExpiry } = useApp();
   const t = useT();
 
   const rf = state.requirementsFile;
+
   if (!rf) {
     return (
       <div
@@ -20,24 +21,69 @@ export function RequirementsList() {
           background: 'var(--surface-0)',
           border: '1px solid var(--border-subtle)',
           borderRadius: 'var(--radius-lg)',
-          padding: '20px',
           boxShadow: 'var(--shadow-sm)',
+          overflow: 'hidden',
         }}
       >
-        <h2 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 12px' }}>
-          {t('requirements')}
-        </h2>
-        <p style={{ fontSize: '13px', color: 'var(--text-muted)', textAlign: 'center', padding: '24px 0' }}>
-          {t('load_json_first')}
-        </p>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '16px 20px',
+            borderBottom: '1px solid var(--border-subtle)',
+            background: 'var(--surface-1)',
+          }}
+        >
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 'var(--radius-md)',
+              background: 'var(--surface-2)',
+              border: '1px solid var(--border-default)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ListChecks size={16} color="var(--text-muted)" strokeWidth={2} />
+          </div>
+          <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>
+            {t('requirements')}
+          </div>
+        </div>
+        <div style={{ padding: '40px 20px', textAlign: 'center' }}>
+          <div
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: 'var(--radius-xl)',
+              background: 'var(--surface-2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 12px',
+            }}
+          >
+            <FileText size={24} color="var(--text-muted)" strokeWidth={1.5} />
+          </div>
+          <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary)', margin: '0 0 4px' }}>
+            No requirements loaded
+          </p>
+          <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>
+            {t('load_json_first')}
+          </p>
+        </div>
       </div>
     );
   }
 
-  // Already sorted by validator — sort again here for display clarity
   const sorted = [...state.requirementStates].sort(
     (a, b) => a.requirement.order - b.requirement.order
   );
+
+  const okCount = sorted.filter(s => s.status === 'ok').length;
 
   return (
     <div
@@ -45,29 +91,70 @@ export function RequirementsList() {
         background: 'var(--surface-0)',
         border: '1px solid var(--border-subtle)',
         borderRadius: 'var(--radius-lg)',
-        padding: '20px',
         boxShadow: 'var(--shadow-sm)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '12px',
+        overflow: 'hidden',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h2 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
-          {t('requirements')}
-        </h2>
-        <div style={{ display: 'flex', gap: '6px' }}>
-          <span style={{ fontSize: '12px', color: 'var(--color-success-text)' }}>
-            ✓ {sorted.filter(s => s.status === 'ok').length}
+      {/* Header */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '16px 20px',
+          borderBottom: '1px solid var(--border-subtle)',
+          background: 'var(--surface-1)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 'var(--radius-md)',
+              background: 'var(--color-primary-50)',
+              border: '1px solid var(--color-primary-200)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ListChecks size={16} color="var(--color-primary-600)" strokeWidth={2} />
+          </div>
+          <div>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2 }}>
+              {t('requirements')}
+            </div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: 1.2 }}>
+              Match PDF files to each required document
+            </div>
+          </div>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 12px',
+            background: okCount === sorted.length ? 'var(--color-success-bg)' : 'var(--surface-2)',
+            border: `1px solid ${okCount === sorted.length ? 'var(--color-success-border)' : 'var(--border-subtle)'}`,
+            borderRadius: 'var(--radius-full)',
+          }}
+        >
+          <span
+            style={{
+              fontSize: '13px',
+              fontWeight: 800,
+              color: okCount === sorted.length ? 'var(--color-success-text)' : 'var(--text-primary)',
+            }}
+          >
+            {okCount}
           </span>
-          <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>/</span>
-          <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-            {sorted.length}
-          </span>
+          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>/ {sorted.length}</span>
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {sorted.map((reqState, idx) => (
           <RequirementRow
             key={reqState.requirement.id}
@@ -94,63 +181,71 @@ function RequirementRow({ reqState, index, onSetMatch, onSetExpiry }: Requiremen
   const t = useT();
   const { requirement, matchedFileId, expiryDate, status } = reqState;
 
-  const lang = state.language;
+  const lang  = state.language;
   const title = lang === 'bn' ? requirement.title_bn : requirement.title_en;
 
-  // Files available for matching: unmatched files + currently matched file
-  // A duplicate file can only be matched if no other file with same hash is already matched elsewhere
+  const isOk       = status === 'ok';
+
   const availableFiles = state.uploadedFiles.filter(f => {
-    if (f.id === matchedFileId) return true; // already matched here
-    if (f.loadError) return false;           // error files not available
-    
-    // Check if this file is a duplicate — if its original is already matched somewhere, block
+    if (f.id === matchedFileId) return true;
+    if (f.loadError) return false;
     if (f.isDuplicate && f.duplicateOfId) {
       const originalIsMatched = state.requirementStates.some(
         s => s.matchedFileId === f.duplicateOfId && s.requirement.id !== requirement.id
       );
       if (originalIsMatched) return false;
     }
-    
-    // Check if already matched to a different requirement
     const isMatchedElsewhere = state.requirementStates.some(
       s => s.matchedFileId === f.id && s.requirement.id !== requirement.id
     );
     return !isMatchedElsewhere;
   });
 
-  const isBlocking = status === 'missing' || status === 'expiry_needed' || status === 'expired';
-
   return (
     <div
       style={{
-        padding: '12px',
-        background: isBlocking ? 'var(--color-error-bg)' : status === 'ok' ? 'var(--color-success-bg)' : 'var(--surface-1)',
-        border: `1px solid ${
-          isBlocking
-            ? 'var(--color-error-border)'
-            : status === 'ok'
-            ? 'var(--color-success-border)'
-            : 'var(--border-subtle)'
-        }`,
         borderRadius: 'var(--radius-md)',
+        border: `1px solid ${
+          status === 'expired'     ? 'var(--color-error-border)'
+          : isOk                   ? 'var(--color-success-border)'
+          : 'var(--border-subtle)'
+        }`,
+        background:
+          status === 'expired'     ? 'var(--color-error-bg)'
+          : isOk                   ? 'var(--color-success-bg)'
+          : 'var(--surface-0)',
+        overflow: 'hidden',
         transition: 'all var(--duration-slow) var(--ease-out)',
       }}
     >
       {/* Row header */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '10px' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '10px',
+          padding: '10px 12px',
+          borderBottom: '1px solid var(--border-subtle)',
+          background: isOk ? 'rgba(255,255,255,0.4)' : 'var(--surface-1)',
+        }}
+      >
         {/* Order badge */}
         <span
           style={{
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '22px',
+            minWidth: '22px',
             height: '22px',
             borderRadius: 'var(--radius-full)',
-            background: 'var(--color-primary-600)',
+            background: status === 'expired'
+              ? 'var(--color-error-text)'
+              : isOk
+              ? 'var(--color-success-text)'
+              : 'var(--color-primary-700)',
             color: 'white',
             fontSize: '11px',
-            fontWeight: 700,
+            fontWeight: 800,
             flexShrink: 0,
           }}
         >
@@ -158,18 +253,20 @@ function RequirementRow({ reqState, index, onSetMatch, onSetExpiry }: Requiremen
         </span>
 
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 2px' }}>
+          <p style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px', lineHeight: 1.3 }}>
             {title}
           </p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', flexWrap: 'wrap' }}>
             <span
               style={{
-                fontSize: '11px',
-                padding: '1px 6px',
+                fontSize: '10px',
+                padding: '1px 7px',
                 borderRadius: 'var(--radius-full)',
                 background: requirement.mandatory ? 'var(--color-primary-100)' : 'var(--surface-3)',
-                color: requirement.mandatory ? 'var(--color-primary-800)' : 'var(--text-muted)',
-                fontWeight: 500,
+                color: requirement.mandatory ? 'var(--color-primary-700)' : 'var(--text-muted)',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
               }}
             >
               {requirement.mandatory ? t('mandatory') : t('optional')}
@@ -179,8 +276,9 @@ function RequirementRow({ reqState, index, onSetMatch, onSetExpiry }: Requiremen
         </div>
       </div>
 
-      {/* Match selector */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      {/* Controls */}
+      <div style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {/* File match selector */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Link2 size={13} color="var(--text-muted)" style={{ flexShrink: 0 }} />
           <select
@@ -193,17 +291,18 @@ function RequirementRow({ reqState, index, onSetMatch, onSetExpiry }: Requiremen
               fontSize: '13px',
               background: 'var(--surface-0)',
               color: 'var(--text-primary)',
-              border: '1px solid var(--border-default)',
+              border: `1px solid ${matchedFileId ? 'var(--color-primary-400)' : 'var(--border-default)'}`,
               borderRadius: 'var(--radius-md)',
               cursor: 'pointer',
               outline: 'none',
+              fontFamily: 'var(--font-body)',
+              transition: 'border-color var(--duration-base)',
             }}
           >
             <option value="">{t('no_file')}</option>
             {availableFiles.map(f => (
               <option key={f.id} value={f.id}>
-                {f.isDuplicate ? '⚠ ' : ''}{f.name}
-                {f.pageCount !== null ? ` (${f.pageCount}p)` : ''}
+                {f.isDuplicate ? '⚠ ' : ''}{f.name}{f.pageCount !== null ? ` (${f.pageCount}p)` : ''}
               </option>
             ))}
           </select>
@@ -214,25 +313,42 @@ function RequirementRow({ reqState, index, onSetMatch, onSetExpiry }: Requiremen
               aria-label={t('unmatch')}
               style={{
                 background: 'none',
-                border: 'none',
+                border: '1px solid var(--border-default)',
                 cursor: 'pointer',
                 color: 'var(--text-muted)',
-                padding: '6px',
-                borderRadius: 'var(--radius-sm)',
+                padding: '6px 8px',
+                borderRadius: 'var(--radius-md)',
                 display: 'flex',
                 alignItems: 'center',
                 flexShrink: 0,
+                transition: 'all var(--duration-base)',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLButtonElement;
+                el.style.background = 'var(--color-error-bg)';
+                el.style.borderColor = 'var(--color-error-border)';
+                el.style.color = 'var(--color-error-text)';
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLButtonElement;
+                el.style.background = 'none';
+                el.style.borderColor = 'var(--border-default)';
+                el.style.color = 'var(--text-muted)';
               }}
             >
-              <Link2Off size={14} />
+              <Link2Off size={13} />
             </button>
           )}
         </div>
 
-        {/* Expiry date input — shown when has_expiry AND file is matched */}
+        {/* Expiry date */}
         {requirement.has_expiry && matchedFileId && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Calendar size={13} color="var(--text-muted)" style={{ flexShrink: 0 }} />
+            <Calendar
+              size={13}
+              color={status === 'expired' || status === 'expiry_needed' ? 'var(--color-error-text)' : 'var(--text-muted)'}
+              style={{ flexShrink: 0 }}
+            />
             <input
               type="date"
               value={expiryDate ?? ''}
@@ -244,9 +360,16 @@ function RequirementRow({ reqState, index, onSetMatch, onSetExpiry }: Requiremen
                 fontSize: '13px',
                 background: 'var(--surface-0)',
                 color: 'var(--text-primary)',
-                border: `1px solid ${status === 'expired' || status === 'expiry_needed' ? 'var(--color-error-border)' : 'var(--border-default)'}`,
+                border: `1px solid ${
+                  status === 'expired' || status === 'expiry_needed'
+                    ? 'var(--color-error-border)'
+                    : expiryDate
+                    ? 'var(--color-success-border)'
+                    : 'var(--border-default)'
+                }`,
                 borderRadius: 'var(--radius-md)',
                 outline: 'none',
+                fontFamily: 'var(--font-body)',
               }}
             />
           </div>

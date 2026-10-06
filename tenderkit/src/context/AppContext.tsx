@@ -11,7 +11,7 @@ import React, {
   useMemo,
   ReactNode,
 } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+
 import {
   AppState,
   Language,
@@ -36,6 +36,24 @@ type Action =
   | { type: 'SET_LANGUAGE'; payload: Language }
   | { type: 'SET_THEME'; payload: Theme }
   | { type: 'LOAD_STATE'; payload: Partial<AppState> };
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function loadStoredTheme(): 'light' | 'dark' {
+  if (typeof window === 'undefined') return 'light';
+  try {
+    const stored = localStorage.getItem('tenderkit_theme') as 'light' | 'dark' | null;
+    return stored === 'dark' ? 'dark' : 'light';
+  } catch { return 'light'; }
+}
+
+function loadStoredLanguage(): 'en' | 'bn' {
+  if (typeof window === 'undefined') return 'en';
+  try {
+    const stored = localStorage.getItem('tenderkit_lang') as 'en' | 'bn' | null;
+    return stored === 'bn' ? 'bn' : 'en';
+  } catch { return 'en'; }
+}
 
 // ─── Initial State ───────────────────────────────────────────────────────────
 
@@ -214,7 +232,17 @@ interface AppContextValue {
 const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  // Load persisted theme/lang before first render to avoid flash
+  const [state, dispatch] = useReducer(reducer, initialState, () => ({
+    ...initialState,
+    theme: loadStoredTheme(),
+    language: loadStoredLanguage(),
+  }));
+
+  // Sync theme attribute to <html> on mount and changes
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-theme', state.theme);
+  }, [state.theme]);
 
   const setRequirements = useCallback((rf: RequirementsFile) => {
     dispatch({ type: 'SET_REQUIREMENTS', payload: rf });
@@ -246,11 +274,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const setLanguage = useCallback((lang: Language) => {
     dispatch({ type: 'SET_LANGUAGE', payload: lang });
+    try { localStorage.setItem('tenderkit_lang', lang); } catch {}
   }, []);
 
   const setTheme = useCallback((theme: Theme) => {
     dispatch({ type: 'SET_THEME', payload: theme });
     document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem('tenderkit_theme', theme); } catch {}
   }, []);
 
   const value = useMemo<AppContextValue>(

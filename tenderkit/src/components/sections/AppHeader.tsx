@@ -86,7 +86,7 @@ export function AppHeader() {
                 fontWeight: 400,
                 letterSpacing: '0.01em',
               }}
-              className="hidden sm:block"
+              className="hidden-sm"
             >
               {t('app_subtitle')}
             </div>
@@ -94,7 +94,7 @@ export function AppHeader() {
 
           {/* Pill badge */}
           <span
-            className="hidden md:inline-flex"
+            className="hidden-md"
             style={{
               padding: '3px 10px',
               background: 'var(--color-primary-50)',

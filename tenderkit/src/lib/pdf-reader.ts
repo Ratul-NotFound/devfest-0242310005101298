@@ -13,7 +13,8 @@ async function getPdfjsLib() {
     pdfjsLib = await import('pdfjs-dist');
     // Set worker source — use CDN worker for compatibility
     if (typeof window !== 'undefined') {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+      // Use local worker file (copied to /public) — CDN may not have pdfjs v5
+      pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
     }
   }
   return pdfjsLib;
@@ -38,18 +39,23 @@ export async function computeFileHash(file: File): Promise<string> {
  * Returns page count or throws with error type.
  */
 export async function getPdfPageCount(file: File): Promise<number> {
-  const pdfjs = await getPdfjsLib();
   const buffer = await file.arrayBuffer();
 
-  const loadingTask = pdfjs.getDocument({
-    data: buffer,
-    // Disable range requests and streaming for local files
-    disableRange: true,
-    disableStream: true,
-  });
-
-  const pdf = await loadingTask.promise;
-  return pdf.numPages;
+  try {
+    const pdfjs = await getPdfjsLib();
+    const loadingTask = pdfjs.getDocument({
+      data: buffer,
+      disableRange: true,
+      disableStream: true,
+    });
+    const pdf = await loadingTask.promise;
+    return pdf.numPages;
+  } catch {
+    // Robust fallback: use pdf-lib to read page count
+    const { PDFDocument } = await import('pdf-lib');
+    const doc = await PDFDocument.load(buffer, { ignoreEncryption: true });
+    return doc.getPageCount();
+  }
 }
 
 /**
