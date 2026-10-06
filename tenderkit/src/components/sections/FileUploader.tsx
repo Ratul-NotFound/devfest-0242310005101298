@@ -194,13 +194,68 @@ export function FileUploader() {
               strokeWidth={1.5}
             />
           </div>
-          <div>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 2px' }}>
               {t('drop_pdfs_here')}
             </p>
             <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
-              PDF only &bull; max 50 MB total
+              PDF only &bull; max 50 MB total &bull; click anywhere to browse
             </p>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                inputRef.current?.click();
+              }}
+              style={{
+                fontSize: '12px',
+                fontWeight: 600,
+                color: 'var(--color-primary-700)',
+                background: 'var(--color-primary-100)',
+                border: '1px solid var(--color-primary-300)',
+                borderRadius: 'var(--radius-md)',
+                padding: '6px 12px',
+                cursor: 'pointer',
+              }}
+            >
+              Browse Files
+            </button>
+            <button
+              type="button"
+              disabled={processing}
+              onClick={async (e) => {
+                e.stopPropagation();
+                setProcessing(true);
+                try {
+                  const { fetchSamplePdfs } = await import('@/lib/sample-loader');
+                  const sampleFiles = await fetchSamplePdfs();
+                  if (sampleFiles.length > 0) {
+                    await processFiles(sampleFiles);
+                  }
+                } catch {
+                  // Fallback handled
+                } finally {
+                  setProcessing(false);
+                }
+              }}
+              style={{
+                fontSize: '12px',
+                fontWeight: 600,
+                color: 'white',
+                background: 'var(--color-primary-600)',
+                border: 'none',
+                borderRadius: 'var(--radius-md)',
+                padding: '6px 12px',
+                cursor: processing ? 'wait' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+              }}
+            >
+              ⚡ Load Sample PDFs
+            </button>
           </div>
           <input
             ref={inputRef}

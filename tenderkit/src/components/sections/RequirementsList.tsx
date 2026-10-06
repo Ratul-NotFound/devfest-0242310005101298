@@ -299,7 +299,13 @@ function RequirementRow({ reqState, index, onSetMatch, onSetExpiry }: Requiremen
               transition: 'border-color var(--duration-base)',
             }}
           >
-            <option value="">{t('no_file')}</option>
+            <option value="">
+              {state.uploadedFiles.length === 0
+                ? 'No files uploaded yet (upload PDFs above)'
+                : availableFiles.length === 0 && !matchedFileId
+                ? 'All uploaded files matched elsewhere'
+                : '-- Select PDF document --'}
+            </option>
             {availableFiles.map(f => (
               <option key={f.id} value={f.id}>
                 {f.isDuplicate ? '⚠ ' : ''}{f.name}{f.pageCount !== null ? ` (${f.pageCount}p)` : ''}
