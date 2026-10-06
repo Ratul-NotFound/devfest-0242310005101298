@@ -10,7 +10,7 @@ import { RequirementsList } from '@/components/sections/RequirementsList';
 import { GeneratePanel } from '@/components/sections/GeneratePanel';
 import { AutoMatchButton } from '@/components/sections/AutoMatchButton';
 import { ExportCsvButton } from '@/components/sections/ExportCsvButton';
-import { SaveLoadProject } from '@/components/sections/SaveLoadProject';
+import { LocalCacheManager } from '@/components/sections/LocalCacheManager';
 import { HeroStrip } from '@/components/sections/HeroStrip';
 
 export default function Home() {
@@ -53,11 +53,11 @@ export default function Home() {
                   margin: '0 0 4px',
                 }}
               >
-                Tools
+                Local DB & Tools
               </p>
               <AutoMatchButton />
               <ExportCsvButton />
-              <SaveLoadProject />
+              <LocalCacheManager />
             </div>
           </aside>
 

@@ -63,7 +63,7 @@
 - [x] T47: Auto-match: score filename vs document title, suggest matches
 - [x] T48: Index page in PDF (doc → page number)
 - [x] T49: CSV export of checklist
-- [x] T50: Save/restore project state via localStorage
+- [x] T50: Save/restore & auto-cache full project state via IndexedDB Local DB with clean/delete options
 
 ### Phase 7: Finalize
 - [x] T51: Run lint + type-check, fix all errors

@@ -290,6 +290,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
     try { localStorage.setItem('tenderkit_theme', theme); } catch {}
   }, []);
 
+  const loadState = useCallback((partial: Partial<AppState>) => {
+    dispatch({ type: 'LOAD_STATE', payload: partial });
+  }, []);
+
+  const resetWorkspace = useCallback(() => {
+    dispatch({
+      type: 'LOAD_STATE',
+      payload: {
+        requirementsFile: null,
+        uploadedFiles: [],
+        requirementStates: [],
+      },
+    });
+  }, []);
+
   const value = useMemo<AppContextValue>(
     () => ({
       state,
@@ -302,6 +317,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setExpiry,
       setLanguage,
       setTheme,
+      loadState,
+      resetWorkspace,
     }),
     [
       state,
@@ -314,6 +331,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setExpiry,
       setLanguage,
       setTheme,
+      loadState,
+      resetWorkspace,
     ]
   );
 
