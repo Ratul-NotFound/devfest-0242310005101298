@@ -1,7 +1,7 @@
 'use client';
 
 // src/app/page.tsx
-// Main TenderKit application page
+// Main TenderKit application page — professional 3-panel layout
 
 import { AppHeader } from '@/components/sections/AppHeader';
 import { RequirementsLoader } from '@/components/sections/RequirementsLoader';
@@ -11,64 +11,76 @@ import { GeneratePanel } from '@/components/sections/GeneratePanel';
 import { AutoMatchButton } from '@/components/sections/AutoMatchButton';
 import { ExportCsvButton } from '@/components/sections/ExportCsvButton';
 import { SaveLoadProject } from '@/components/sections/SaveLoadProject';
+import { HeroStrip } from '@/components/sections/HeroStrip';
 
 export default function Home() {
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--surface-1)' }}>
       <AppHeader />
+      <HeroStrip />
 
       <main
         className="container-app"
-        style={{ paddingTop: '24px', paddingBottom: '48px' }}
+        style={{ paddingTop: '28px', paddingBottom: '64px' }}
       >
-        {/* Hero / intro */}
-        <div style={{ marginBottom: '24px' }}>
-          <h1
-            style={{
-              fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              margin: '0 0 4px',
-              letterSpacing: '-0.01em',
-            }}
-          >
-            Tender Document Package Builder
-          </h1>
-          <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
-            Load your requirements, upload PDFs, verify status, and generate a complete package ready to submit.
-          </p>
-        </div>
-
-        {/* Main layout: 3-column on desktop */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            gap: '16px',
-          }}
-          className="lg:grid-cols-[340px_1fr_320px]"
-        >
-          {/* Left column: Requirements loader + Generate panel */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {/* 3-column desktop layout */}
+        <div className="main-grid">
+          {/* ── Left Panel ── */}
+          <aside style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <RequirementsLoader />
             <GeneratePanel />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+
+            {/* Utility actions */}
+            <div
+              style={{
+                background: 'var(--surface-0)',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '16px',
+                boxShadow: 'var(--shadow-sm)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  color: 'var(--text-muted)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  margin: '0 0 4px',
+                }}
+              >
+                Tools
+              </p>
               <AutoMatchButton />
               <ExportCsvButton />
               <SaveLoadProject />
             </div>
-          </div>
+          </aside>
 
-          {/* Center column: File uploader + Requirements list */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* ── Center Column ── */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 }}>
             <FileUploader />
             <RequirementsList />
           </div>
-
-          {/* Right column on desktop: Status summary (shown inline on mobile) */}
-          {/* Already included in GeneratePanel above */}
         </div>
       </main>
+
+      {/* Footer */}
+      <footer
+        style={{
+          borderTop: '1px solid var(--border-subtle)',
+          padding: '20px',
+          textAlign: 'center',
+        }}
+      >
+        <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
+          TenderKit &mdash; Government Tender Document Package Builder &bull; All processing done locally in your browser &bull; No data sent to servers
+        </p>
+      </footer>
     </div>
   );
 }

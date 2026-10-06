@@ -1,7 +1,7 @@
 @import '../styles/tokens.css';
 @import 'tailwindcss';
 
-/* Additional global utilities */
+/* ── Global utilities ── */
 @layer utilities {
   .container-app {
     max-width: var(--container-max);
@@ -25,12 +25,46 @@
     }
   }
 
-  /* Responsive grid for main layout on large screens */
+  /* Main 2-column grid: sidebar + content */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
   @media (min-width: 1024px) {
-    .layout-grid {
-      display: grid;
+    .main-grid {
       grid-template-columns: 340px 1fr;
-      gap: 16px;
+      gap: 20px;
+      align-items: start;
+    }
+  }
+
+  /* Hide on small, show on lg */
+  .hidden.lg\:flex {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .hidden.lg\:flex {
+      display: flex;
+    }
+  }
+
+  .hidden.md\:inline-flex {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .hidden.md\:inline-flex {
+      display: inline-flex;
+    }
+  }
+
+  .hidden.sm\:block {
+    display: none;
+  }
+  @media (min-width: 640px) {
+    .hidden.sm\:block {
+      display: block;
     }
   }
 }
