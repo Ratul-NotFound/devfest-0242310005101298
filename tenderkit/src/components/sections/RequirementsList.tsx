@@ -88,6 +88,7 @@ export function RequirementsList() {
 
   return (
     <div
+      className="interactive-card"
       style={{
         background: 'var(--surface-0)',
         border: '1px solid var(--border-subtle)',
@@ -127,7 +128,7 @@ export function RequirementsList() {
               {t('requirements')}
             </div>
             <div style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: 1.2 }}>
-              Match PDF files to each required document
+              {t('match_req_desc')}
             </div>
           </div>
         </div>
@@ -204,6 +205,7 @@ function RequirementRow({ reqState, index, onSetMatch, onSetExpiry }: Requiremen
 
   return (
     <div
+      className="interactive-row"
       style={{
         borderRadius: 'var(--radius-md)',
         border: `1px solid ${
@@ -216,7 +218,6 @@ function RequirementRow({ reqState, index, onSetMatch, onSetExpiry }: Requiremen
           : isOk                   ? 'var(--color-success-bg)'
           : 'var(--surface-0)',
         overflow: 'hidden',
-        transition: 'all var(--duration-slow) var(--ease-out)',
       }}
     >
       {/* Row header */}
@@ -302,14 +303,14 @@ function RequirementRow({ reqState, index, onSetMatch, onSetExpiry }: Requiremen
           >
             <option value="">
               {state.uploadedFiles.length === 0
-                ? 'No files uploaded yet (upload PDFs above)'
+                ? t('no_files_yet')
                 : availableFiles.length === 0 && !matchedFileId
-                ? 'All uploaded files matched elsewhere'
-                : '-- Select PDF document --'}
+                ? t('all_files_matched')
+                : t('no_file')}
             </option>
             {availableFiles.map(f => (
               <option key={f.id} value={f.id}>
-                {f.isDuplicate ? '⚠ ' : ''}{f.name}{f.pageCount !== null ? ` (${f.pageCount}p)` : ''}
+                {f.isDuplicate ? '⚠ ' : ''}{f.name}{f.pageCount !== null ? ` (${f.pageCount} ${t('pages')})` : ''}
               </option>
             ))}
           </select>

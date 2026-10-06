@@ -97,6 +97,7 @@ export function FileUploader() {
 
   return (
     <div
+      className="interactive-card"
       style={{
         background: 'var(--surface-0)',
         border: '1px solid var(--border-subtle)',
@@ -220,7 +221,7 @@ export function FileUploader() {
                 cursor: 'pointer',
               }}
             >
-              Browse Files
+              {t('browse_pdfs')}
             </button>
             <button
               type="button"
@@ -254,7 +255,7 @@ export function FileUploader() {
                 gap: '4px',
               }}
             >
-              ⚡ Load Sample PDFs
+              {t('load_sample_pdfs')}
             </button>
           </div>
           <input

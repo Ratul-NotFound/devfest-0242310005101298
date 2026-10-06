@@ -1,7 +1,7 @@
 'use client';
 
 // src/components/sections/AppHeader.tsx
-// Top navigation bar with brand logo, language and theme toggles
+// Clean, professional top navigation bar with brand logo, title, and language/theme controls
 
 import Image from 'next/image';
 import { useApp, useT } from '@/context/AppContext';
@@ -28,9 +28,9 @@ export function AppHeader() {
         height: 'var(--header-height)',
         background: 'var(--surface-0)',
         borderBottom: '1px solid var(--border-subtle)',
-        boxShadow: '0 1px 0 var(--border-subtle), var(--shadow-sm)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
       }}
     >
       <div
@@ -43,12 +43,12 @@ export function AppHeader() {
           gap: '16px',
         }}
       >
-        {/* Brand: Logo + Title */}
+        {/* Left: Brand Logo + Title */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div
             style={{
-              width: 44,
-              height: 44,
+              width: 38,
+              height: 38,
               borderRadius: 'var(--radius-md)',
               overflow: 'hidden',
               flexShrink: 0,
@@ -60,23 +60,40 @@ export function AppHeader() {
             <Image
               src="/logo.png"
               alt="TenderKit Logo"
-              width={44}
-              height={44}
+              width={38}
+              height={38}
               style={{ objectFit: 'contain' }}
               priority
             />
           </div>
           <div>
-            <div
-              style={{
-                fontSize: '17px',
-                fontWeight: 800,
-                color: 'var(--text-primary)',
-                lineHeight: 1.2,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              TenderKit
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span
+                style={{
+                  fontSize: '17px',
+                  fontWeight: 800,
+                  color: 'var(--text-primary)',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.2,
+                }}
+              >
+                TenderKit
+              </span>
+              <span
+                className="hidden-sm"
+                style={{
+                  padding: '2px 8px',
+                  background: 'var(--color-primary-50)',
+                  border: '1px solid var(--color-primary-200)',
+                  borderRadius: 'var(--radius-full)',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  color: 'var(--color-primary-700)',
+                  letterSpacing: '0.02em',
+                }}
+              >
+                BD Tender
+              </span>
             </div>
             <div
               style={{
@@ -84,34 +101,16 @@ export function AppHeader() {
                 color: 'var(--text-muted)',
                 lineHeight: 1.2,
                 fontWeight: 400,
-                letterSpacing: '0.01em',
               }}
               className="hidden-sm"
             >
               {t('app_subtitle')}
             </div>
           </div>
-
-          {/* Pill badge */}
-          <span
-            className="hidden-md"
-            style={{
-              padding: '3px 10px',
-              background: 'var(--color-primary-50)',
-              border: '1px solid var(--color-primary-200)',
-              borderRadius: 'var(--radius-full)',
-              fontSize: '11px',
-              fontWeight: 600,
-              color: 'var(--color-primary-700)',
-              letterSpacing: '0.02em',
-            }}
-          >
-            BD Tender Docs
-          </span>
         </div>
 
-        {/* Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        {/* Right: Controls (Language & Theme) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
           {/* Language toggle */}
           <button
             onClick={toggleLanguage}
@@ -120,11 +119,11 @@ export function AppHeader() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '7px 14px',
-              background: 'var(--surface-2)',
+              padding: '6px 14px',
+              background: 'var(--surface-1)',
               border: '1px solid var(--border-default)',
               borderRadius: 'var(--radius-full)',
-              fontSize: '13px',
+              fontSize: '12px',
               fontWeight: 600,
               color: 'var(--text-primary)',
               cursor: 'pointer',
@@ -133,15 +132,15 @@ export function AppHeader() {
             }}
             onMouseEnter={e => {
               const el = e.currentTarget;
-              el.style.background = 'var(--color-primary-600)';
-              el.style.color = 'white';
-              el.style.borderColor = 'var(--color-primary-600)';
+              el.style.background = 'var(--color-primary-50)';
+              el.style.borderColor = 'var(--color-primary-300)';
+              el.style.color = 'var(--color-primary-700)';
             }}
             onMouseLeave={e => {
               const el = e.currentTarget;
-              el.style.background = 'var(--surface-2)';
-              el.style.color = 'var(--text-primary)';
+              el.style.background = 'var(--surface-1)';
               el.style.borderColor = 'var(--border-default)';
+              el.style.color = 'var(--text-primary)';
             }}
           >
             <Globe size={13} strokeWidth={2} />
@@ -156,9 +155,9 @@ export function AppHeader() {
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '38px',
-              height: '38px',
-              background: 'var(--surface-2)',
+              width: '36px',
+              height: '36px',
+              background: 'var(--surface-1)',
               border: '1px solid var(--border-default)',
               borderRadius: 'var(--radius-full)',
               cursor: 'pointer',
@@ -168,21 +167,21 @@ export function AppHeader() {
             }}
             onMouseEnter={e => {
               const el = e.currentTarget;
-              el.style.background = 'var(--color-primary-600)';
-              el.style.color = 'white';
-              el.style.borderColor = 'var(--color-primary-600)';
+              el.style.background = 'var(--color-primary-50)';
+              el.style.borderColor = 'var(--color-primary-300)';
+              el.style.color = 'var(--color-primary-700)';
             }}
             onMouseLeave={e => {
               const el = e.currentTarget;
-              el.style.background = 'var(--surface-2)';
-              el.style.color = 'var(--text-secondary)';
+              el.style.background = 'var(--surface-1)';
               el.style.borderColor = 'var(--border-default)';
+              el.style.color = 'var(--text-secondary)';
             }}
           >
             {state.theme === 'light' ? (
-              <Moon size={16} strokeWidth={2} />
+              <Moon size={15} strokeWidth={2} />
             ) : (
-              <Sun size={16} strokeWidth={2} />
+              <Sun size={15} strokeWidth={2} />
             )}
           </button>
         </div>

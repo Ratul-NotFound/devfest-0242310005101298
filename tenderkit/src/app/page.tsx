@@ -11,17 +11,15 @@ import { GeneratePanel } from '@/components/sections/GeneratePanel';
 import { AutoMatchButton } from '@/components/sections/AutoMatchButton';
 import { ExportCsvButton } from '@/components/sections/ExportCsvButton';
 import { LocalCacheManager } from '@/components/sections/LocalCacheManager';
-import { HeroStrip } from '@/components/sections/HeroStrip';
 
 export default function Home() {
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--surface-1)' }}>
       <AppHeader />
-      <HeroStrip />
 
       <main
         className="container-app"
-        style={{ paddingTop: '28px', paddingBottom: '64px' }}
+        style={{ paddingTop: '24px', paddingBottom: '64px' }}
       >
         {/* 3-column desktop layout */}
         <div className="main-grid">

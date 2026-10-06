@@ -1,6 +1,5 @@
 // src/lib/i18n.ts
-// All UI text strings in English and Bangla
-// Usage: const t = useTranslation(); t('key')
+// All UI text strings in English and Bangla (বাংলা) for complete bilingual integration
 
 import { Language } from '@/types';
 
@@ -11,24 +10,30 @@ type TranslationKey =
   | 'load_requirements_desc'
   | 'drop_json_here'
   | 'browse_file'
+  | 'load_sample_json'
   | 'tender_id'
   | 'tender_title'
   | 'procuring_entity'
   | 'bidder'
   | 'submission_deadline'
   | 'requirements'
+  | 'match_req_desc'
   | 'upload_files'
   | 'upload_files_desc'
   | 'drop_pdfs_here'
   | 'browse_pdfs'
+  | 'load_sample_pdfs'
   | 'uploaded_files'
   | 'no_files_uploaded'
   | 'pages'
   | 'remove'
+  | 'clear'
   | 'duplicate'
   | 'match_documents'
   | 'select_file'
   | 'no_file'
+  | 'no_files_yet'
+  | 'all_files_matched'
   | 'expiry_date'
   | 'expiry_date_placeholder'
   | 'status'
@@ -74,7 +79,19 @@ type TranslationKey =
   | 'total_size'
   | 'of'
   | 'page'
-  | 'document';
+  | 'document'
+  | 'match_deadline'
+  | 'plus_one_year'
+  | 'valid_on_deadline'
+  | 'expired_before_deadline'
+  | 'local_db_cache'
+  | 'clean_delete_db'
+  | 'restore_db'
+  | 'saved_to_db'
+  | 'step_json'
+  | 'step_pdfs'
+  | 'step_match'
+  | 'step_package';
 
 type Translations = Record<TranslationKey, string>;
 
@@ -85,25 +102,31 @@ const en: Translations = {
   load_requirements_desc: 'Upload your requirements.json file to begin',
   drop_json_here: 'Drop requirements.json here',
   browse_file: 'Browse File',
+  load_sample_json: '⚡ Load Sample JSON',
   tender_id: 'Tender ID',
   tender_title: 'Title',
   procuring_entity: 'Procuring Entity',
   bidder: 'Bidder',
   submission_deadline: 'Submission Deadline',
   requirements: 'Requirements',
+  match_req_desc: 'Match PDF files to each required document',
   upload_files: 'Upload PDF Files',
   upload_files_desc: 'Upload all required PDF documents (max 30 files, 50 MB total)',
   drop_pdfs_here: 'Drop PDF files here or click to browse',
-  browse_pdfs: 'Browse PDFs',
+  browse_pdfs: 'Browse Files',
+  load_sample_pdfs: '⚡ Load Sample PDFs',
   uploaded_files: 'Uploaded Files',
   no_files_uploaded: 'No files uploaded yet',
   pages: 'pages',
   remove: 'Remove',
+  clear: 'Clear',
   duplicate: 'Duplicate',
   match_documents: 'Match Documents',
   select_file: 'Select a file...',
-  no_file: 'No file',
-  expiry_date: 'Expiry Date',
+  no_file: '-- Select PDF document --',
+  no_files_yet: 'No files uploaded yet (upload PDFs above)',
+  all_files_matched: 'All uploaded files matched elsewhere',
+  expiry_date: 'Document Expiry Date',
   expiry_date_placeholder: 'YYYY-MM-DD',
   status: 'Status',
   status_missing: 'Missing',
@@ -143,12 +166,24 @@ const en: Translations = {
   auto_match: 'Auto-Match',
   auto_match_done: 'Auto-match complete',
   export_csv: 'Export CSV',
-  save_project: 'Save Project',
+  save_project: 'Save to DB',
   load_project: 'Load Project',
   total_size: 'Total size',
   of: 'of',
   page: 'Page',
   document: 'Document',
+  match_deadline: 'Match Deadline',
+  plus_one_year: '+1 Year',
+  valid_on_deadline: 'Valid on deadline',
+  expired_before_deadline: 'Expired before deadline',
+  local_db_cache: 'Local DB Cache',
+  clean_delete_db: 'Clean & Delete Local DB',
+  restore_db: 'Restore DB',
+  saved_to_db: 'Saved to DB!',
+  step_json: '1. JSON',
+  step_pdfs: '2. PDFs',
+  step_match: '3. Match',
+  step_package: '4. Package',
 };
 
 const bn: Translations = {
@@ -158,24 +193,30 @@ const bn: Translations = {
   load_requirements_desc: 'শুরু করতে requirements.json ফাইল আপলোড করুন',
   drop_json_here: 'এখানে requirements.json ড্রপ করুন',
   browse_file: 'ফাইল খুঁজুন',
+  load_sample_json: '⚡ নমুনা JSON লোড',
   tender_id: 'টেন্ডার আইডি',
   tender_title: 'শিরোনাম',
   procuring_entity: 'ক্রয়কারী সংস্থা',
   bidder: 'দরদাতা',
   submission_deadline: 'দাখিলের শেষ তারিখ',
   requirements: 'প্রয়োজনীয় কাগজপত্র',
-  upload_files: 'পিডিএফ ফাইল আপলোড করুন',
+  match_req_desc: 'প্রতিটি প্রয়োজনীয় ডকুমেন্টে পিডিএফ ফাইল মিলান',
+  upload_files: 'পিডিএফ ফাইল আপলোড',
   upload_files_desc: 'সব প্রয়োজনীয় পিডিএফ ডকুমেন্ট আপলোড করুন (সর্বোচ্চ ৩০টি ফাইল, মোট ৫০ এমবি)',
-  drop_pdfs_here: 'এখানে পিডিএফ ফাইল ড্রপ করুন বা ক্লিক করুন',
-  browse_pdfs: 'পিডিএফ খুঁজুন',
+  drop_pdfs_here: 'এখানে পিডিএফ ফাইল ড্রপ করুন বা ব্রাউজ করুন',
+  browse_pdfs: 'ফাইল খুঁজুন',
+  load_sample_pdfs: '⚡ নমুনা PDFs লোড',
   uploaded_files: 'আপলোড করা ফাইলসমূহ',
   no_files_uploaded: 'এখনো কোনো ফাইল আপলোড করা হয়নি',
   pages: 'পৃষ্ঠা',
   remove: 'মুছুন',
+  clear: 'মুছুন',
   duplicate: 'ডুপ্লিকেট',
   match_documents: 'ডকুমেন্ট মিলান',
   select_file: 'ফাইল নির্বাচন করুন...',
-  no_file: 'কোনো ফাইল নেই',
+  no_file: '-- PDF ফাইল নির্বাচন করুন --',
+  no_files_yet: 'কোনো PDF ফাইল নেই (উপরে আপলোড করুন)',
+  all_files_matched: 'সব ফাইল অন্য ডকুমেন্টে মেলানো হয়েছে',
   expiry_date: 'মেয়াদ শেষের তারিখ',
   expiry_date_placeholder: 'YYYY-MM-DD',
   status: 'অবস্থা',
@@ -216,12 +257,24 @@ const bn: Translations = {
   auto_match: 'স্বয়ংক্রিয় মিলান',
   auto_match_done: 'স্বয়ংক্রিয় মিলান সম্পন্ন',
   export_csv: 'CSV রপ্তানি',
-  save_project: 'প্রজেক্ট সংরক্ষণ',
+  save_project: 'DB-তে সংরক্ষণ',
   load_project: 'প্রজেক্ট লোড করুন',
   total_size: 'মোট আকার',
   of: 'এর মধ্যে',
   page: 'পৃষ্ঠা',
   document: 'ডকুমেন্ট',
+  match_deadline: 'শেষ তারিখ মিলান',
+  plus_one_year: '+১ বছর',
+  valid_on_deadline: 'দাখিলের তারিখে কার্যকর',
+  expired_before_deadline: 'শেষ তারিখের পূর্বে মেয়াদ উত্তীর্ণ',
+  local_db_cache: 'লোকাল DB ক্যাশ',
+  clean_delete_db: 'লোকাল DB পরিষ্কার ও মুছুন',
+  restore_db: 'পুনরুদ্ধার',
+  saved_to_db: 'DB-তে সংরক্ষিত!',
+  step_json: '১. JSON',
+  step_pdfs: '২. PDFs',
+  step_match: '৩. মিলান',
+  step_package: '৪. প্যাকেজ',
 };
 
 const translations: Record<Language, Translations> = { en, bn };

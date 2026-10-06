@@ -1,7 +1,7 @@
 'use client';
 
 // src/components/sections/LocalCacheManager.tsx
-// Local Database (IndexedDB) manager for persistent caching with clean and delete options
+// Local Database (IndexedDB) manager with full bilingual English/Bangla integration
 
 import { useEffect, useState, useCallback } from 'react';
 import { useApp, useT } from '@/context/AppContext';
@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/Button';
 export function LocalCacheManager() {
   const { state, loadState, resetWorkspace } = useApp();
   const t = useT();
+  const isBn = state.language === 'bn';
 
   const [stats, setStats] = useState<{
     totalBytes: number;
@@ -139,10 +140,12 @@ export function LocalCacheManager() {
       >
         <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600 }}>
           <Database size={13} color="var(--color-primary-600)" />
-          Local DB Cache:
+          {t('local_db_cache')}:
         </span>
         <span style={{ fontWeight: 700, color: hasCachedData ? 'var(--color-primary-700)' : 'var(--text-muted)' }}>
-          {hasCachedData ? `${formatFileSize(stats.totalBytes)} (${stats.fileCount} files)` : 'Empty (0 B)'}
+          {hasCachedData
+            ? `${formatFileSize(stats.totalBytes)} (${stats.fileCount} ${isBn ? 'টি ফাইল' : 'files'})`
+            : isBn ? 'খালি (০ B)' : 'Empty (0 B)'}
         </span>
       </div>
 
@@ -156,7 +159,7 @@ export function LocalCacheManager() {
           icon={justSaved ? <CheckCircle2 size={13} color="var(--color-success-text)" /> : <Save size={13} />}
           style={{ justifyContent: 'center', fontSize: '11px' }}
         >
-          {justSaved ? 'Saved to DB!' : t('save_project')}
+          {justSaved ? t('saved_to_db') : t('save_project')}
         </Button>
 
         <Button
@@ -167,7 +170,7 @@ export function LocalCacheManager() {
           icon={justRestored ? <CheckCircle2 size={13} color="var(--color-success-text)" /> : <RotateCcw size={13} />}
           style={{ justifyContent: 'center', fontSize: '11px' }}
         >
-          {justRestored ? 'Restored!' : 'Restore DB'}
+          {justRestored ? (isBn ? 'পুনরুদ্ধার হয়েছে!' : 'Restored!') : t('restore_db')}
         </Button>
       </div>
 
@@ -193,7 +196,7 @@ export function LocalCacheManager() {
           }}
         >
           <Trash2 size={12} />
-          Clean & Delete Local DB
+          {t('clean_delete_db')}
         </button>
       )}
 
@@ -231,7 +234,7 @@ export function LocalCacheManager() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <AlertTriangle size={18} color="var(--color-error-text)" />
                 <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>
-                  Clean & Delete Local DB?
+                  {isBn ? 'লোকাল DB পরিষ্কার ও মুছবেন?' : 'Clean & Delete Local DB?'}
                 </span>
               </div>
               <button
@@ -243,7 +246,9 @@ export function LocalCacheManager() {
             </div>
 
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
-              This will delete all cached PDF files ({stats.fileCount} files, {formatFileSize(stats.totalBytes)}) and reset your current workspace. This action cannot be undone.
+              {isBn
+                ? `এটি সমস্ত ক্যাশ করা পিডিএফ ফাইল (${stats.fileCount} টি ফাইল, ${formatFileSize(stats.totalBytes)}) মুছে ফেলবে এবং আপনার বর্তমান ওয়ার্কস্পেস রিসেট করবে। এটি পুনরুদ্ধার করা যাবে না।`
+                : `This will delete all cached PDF files (${stats.fileCount} files, ${formatFileSize(stats.totalBytes)}) and reset your current workspace. This action cannot be undone.`}
             </p>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '4px' }}>
@@ -260,7 +265,7 @@ export function LocalCacheManager() {
                   cursor: 'pointer',
                 }}
               >
-                Cancel
+                {isBn ? 'বাতিল' : 'Cancel'}
               </button>
               <button
                 type="button"
@@ -280,7 +285,7 @@ export function LocalCacheManager() {
                 }}
               >
                 <Trash2 size={13} />
-                Delete & Reset
+                {isBn ? 'মুছুন ও রিসেট করুন' : 'Delete & Reset'}
               </button>
             </div>
           </div>

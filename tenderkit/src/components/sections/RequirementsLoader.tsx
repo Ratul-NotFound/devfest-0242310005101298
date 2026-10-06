@@ -44,6 +44,7 @@ export function RequirementsLoader() {
 
   return (
     <div
+      className="interactive-card"
       style={{
         background: 'var(--surface-0)',
         border: '1px solid var(--border-subtle)',
@@ -111,10 +112,10 @@ export function RequirementsLoader() {
               fontWeight: 500,
               transition: 'all var(--duration-base)',
             }}
-            aria-label="Clear requirements"
+            aria-label={t('clear')}
           >
             <X size={12} />
-            Clear
+            {t('clear')}
           </button>
         )}
       </div>
@@ -170,19 +171,53 @@ export function RequirementsLoader() {
                 {t('load_requirements_desc')}
               </p>
             </div>
-            <span
-              style={{
-                fontSize: '12px',
-                fontWeight: 600,
-                color: 'var(--color-primary-600)',
-                padding: '5px 14px',
-                background: 'var(--color-primary-50)',
-                border: '1px solid var(--color-primary-200)',
-                borderRadius: 'var(--radius-full)',
-              }}
-            >
-              {t('browse_file')}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <span
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: 'var(--color-primary-700)',
+                  padding: '6px 14px',
+                  background: 'var(--color-primary-100)',
+                  border: '1px solid var(--color-primary-300)',
+                  borderRadius: 'var(--radius-full)',
+                  cursor: 'pointer',
+                  transition: 'all var(--duration-base)',
+                }}
+              >
+                {t('browse_file')}
+              </span>
+              <button
+                type="button"
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  try {
+                    const { fetchSampleRequirements } = await import('@/lib/sample-loader');
+                    const sampleReq = await fetchSampleRequirements();
+                    if (sampleReq) handleFile(sampleReq);
+                  } catch {
+                    // Fallback handled
+                  }
+                }}
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: '#ffffff',
+                  padding: '6px 14px',
+                  background: 'var(--color-primary-600)',
+                  border: 'none',
+                  borderRadius: 'var(--radius-full)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  boxShadow: 'var(--shadow-xs)',
+                  transition: 'all var(--duration-base)',
+                }}
+              >
+                {t('load_sample_json')}
+              </button>
+            </div>
             <input
               id="json-upload"
               type="file"

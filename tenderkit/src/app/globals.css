@@ -17,7 +17,7 @@
   50%       { opacity: 0.5; }
 }
 
-/* ── Global utilities ── */
+/* ── Global utilities & interactive animations ── */
 @layer utilities {
   .container-app {
     max-width: var(--container-max);
@@ -50,11 +50,43 @@
 
   @media (min-width: 1024px) {
     .main-grid {
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: 360px 1fr;
       gap: 20px;
       align-items: start;
     }
   }
+}
+
+/* ── Interactive Card & Row Micro-interactions ── */
+.interactive-card {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.interactive-card:hover {
+  border-color: var(--color-primary-300);
+}
+
+.interactive-row {
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.interactive-row:hover {
+  border-color: var(--color-primary-300);
+  box-shadow: var(--shadow-xs);
+}
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
 }
 
 /* ── Responsive visibility helpers (without Tailwind prefix conflicts) ── */

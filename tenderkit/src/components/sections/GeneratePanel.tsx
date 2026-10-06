@@ -57,6 +57,7 @@ export function GeneratePanel() {
 
   return (
     <div
+      className="interactive-card"
       style={{
         background: 'var(--surface-0)',
         border: '1px solid var(--border-subtle)',

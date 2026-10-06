@@ -1,9 +1,10 @@
 'use client';
 
 // src/components/ui/DatePickerField.tsx
-// Interactive date picker with calendar popup trigger and quick presets
+// Interactive date picker with calendar popup trigger and quick presets (Bilingual EN/BN)
 
 import { useRef } from 'react';
+import { useT } from '@/context/AppContext';
 import { Calendar as CalendarIcon, X, CheckCircle2, AlertTriangle, CalendarDays } from 'lucide-react';
 
 interface DatePickerFieldProps {
@@ -21,9 +22,12 @@ export function DatePickerField({
   submissionDeadline,
   isExpired,
   isNeeded,
-  label = 'Document Expiry Date',
+  label,
 }: DatePickerFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const t = useT();
+
+  const displayLabel = label || t('expiry_date');
 
   const openCalendar = () => {
     if (inputRef.current) {
@@ -54,7 +58,7 @@ export function DatePickerField({
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
           <CalendarDays size={12} color="var(--color-primary-600)" />
-          {label}:
+          {displayLabel}:
         </span>
         {value && submissionDeadline && (
           <span
@@ -69,11 +73,11 @@ export function DatePickerField({
           >
             {isExpired ? (
               <>
-                <AlertTriangle size={11} /> Expired before deadline
+                <AlertTriangle size={11} /> {t('expired_before_deadline')}
               </>
             ) : (
               <>
-                <CheckCircle2 size={11} /> Valid on deadline
+                <CheckCircle2 size={11} /> {t('valid_on_deadline')}
               </>
             )}
           </span>
@@ -112,7 +116,7 @@ export function DatePickerField({
               e.stopPropagation();
               openCalendar();
             }}
-            title="Open Calendar"
+            title={displayLabel}
             style={{
               background: 'var(--color-primary-50)',
               border: '1px solid var(--color-primary-200)',
@@ -153,7 +157,7 @@ export function DatePickerField({
                 e.stopPropagation();
                 onChange(null);
               }}
-              title="Clear date"
+              title={t('clear')}
               style={{
                 background: 'none',
                 border: 'none',
@@ -174,7 +178,7 @@ export function DatePickerField({
           <button
             type="button"
             onClick={() => setPreset(submissionDeadline)}
-            title={`Set to tender deadline (${submissionDeadline})`}
+            title={`${t('match_deadline')} (${submissionDeadline})`}
             style={{
               fontSize: '11px',
               fontWeight: 600,
@@ -187,13 +191,13 @@ export function DatePickerField({
               whiteSpace: 'nowrap',
             }}
           >
-            Match Deadline
+            {t('match_deadline')}
           </button>
         )}
         <button
           type="button"
           onClick={() => setPreset(nextYearDate())}
-          title="Set to 1 year from today"
+          title={t('plus_one_year')}
           style={{
             fontSize: '11px',
             fontWeight: 600,
@@ -206,7 +210,7 @@ export function DatePickerField({
             whiteSpace: 'nowrap',
           }}
         >
-          +1 Year
+          {t('plus_one_year')}
         </button>
       </div>
     </div>
