@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./Brand_logo.png" alt="TenderKit Logo" width="180" />
+</p>
+
 # TenderKit — Tender Document Package Builder
 
 > **AI DevFest Vibe Coding Contest Submission**
