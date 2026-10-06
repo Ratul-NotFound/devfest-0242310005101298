@@ -4,6 +4,7 @@
 // Main TenderKit application page — professional 3-panel layout
 
 import { AppHeader } from '@/components/sections/AppHeader';
+import { WorkflowStepper } from '@/components/sections/WorkflowStepper';
 import { RequirementsLoader } from '@/components/sections/RequirementsLoader';
 import { FileUploader } from '@/components/sections/FileUploader';
 import { RequirementsList } from '@/components/sections/RequirementsList';
@@ -19,8 +20,11 @@ export default function Home() {
 
       <main
         className="container-app"
-        style={{ paddingTop: '24px', paddingBottom: '64px' }}
+        style={{ paddingTop: '20px', paddingBottom: '64px' }}
       >
+        {/* Visual Process Stepper */}
+        <WorkflowStepper />
+
         {/* 3-column desktop layout */}
         <div className="main-grid">
           {/* ── Left Panel ── */}
