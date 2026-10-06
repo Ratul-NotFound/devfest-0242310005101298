@@ -1,0 +1,36 @@
+@import '../styles/tokens.css';
+@import 'tailwindcss';
+
+/* Additional global utilities */
+@layer utilities {
+  .container-app {
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .container-app {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-app {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  /* Responsive grid for main layout on large screens */
+  @media (min-width: 1024px) {
+    .layout-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 16px;
+    }
+  }
+}
