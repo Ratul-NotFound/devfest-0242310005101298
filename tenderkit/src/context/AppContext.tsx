@@ -206,8 +206,13 @@ function reducer(state: AppState, action: Action): AppState {
     case 'SET_THEME':
       return { ...state, theme: action.payload };
 
-    case 'LOAD_STATE':
-      return { ...state, ...action.payload };
+    case 'LOAD_STATE': {
+      const next = { ...state, ...action.payload };
+      if (next.requirementsFile) {
+        next.requirementStates = recomputeStates(next);
+      }
+      return next;
+    }
 
     default:
       return state;
@@ -227,6 +232,8 @@ interface AppContextValue {
   setExpiry: (reqId: string, date: string | null) => void;
   setLanguage: (lang: Language) => void;
   setTheme: (theme: Theme) => void;
+  loadState: (partial: Partial<AppState>) => void;
+  resetWorkspace: () => void;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);

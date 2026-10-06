@@ -5,8 +5,9 @@
 
 import { useApp, useT } from '@/context/AppContext';
 import { StatusBadge } from '@/components/ui/StatusBadge';
+import { DatePickerField } from '@/components/ui/DatePickerField';
 import { RequirementState } from '@/types';
-import { Calendar, Link2, Link2Off, ListChecks, FileText } from 'lucide-react';
+import { Link2, Link2Off, ListChecks, FileText } from 'lucide-react';
 
 export function RequirementsList() {
   const { state, setMatch, setExpiry } = useApp();
@@ -349,34 +350,14 @@ function RequirementRow({ reqState, index, onSetMatch, onSetExpiry }: Requiremen
 
         {/* Expiry date */}
         {requirement.has_expiry && matchedFileId && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Calendar
-              size={13}
-              color={status === 'expired' || status === 'expiry_needed' ? 'var(--color-error-text)' : 'var(--text-muted)'}
-              style={{ flexShrink: 0 }}
-            />
-            <input
-              type="date"
-              value={expiryDate ?? ''}
-              onChange={e => onSetExpiry(requirement.id, e.target.value || null)}
-              aria-label={`${t('expiry_date')} for ${title}`}
-              style={{
-                flex: 1,
-                padding: '6px 10px',
-                fontSize: '13px',
-                background: 'var(--surface-0)',
-                color: 'var(--text-primary)',
-                border: `1px solid ${
-                  status === 'expired' || status === 'expiry_needed'
-                    ? 'var(--color-error-border)'
-                    : expiryDate
-                    ? 'var(--color-success-border)'
-                    : 'var(--border-default)'
-                }`,
-                borderRadius: 'var(--radius-md)',
-                outline: 'none',
-                fontFamily: 'var(--font-body)',
-              }}
+          <div style={{ marginTop: '2px', paddingTop: '8px', borderTop: '1px dashed var(--border-subtle)' }}>
+            <DatePickerField
+              value={expiryDate}
+              onChange={date => onSetExpiry(requirement.id, date)}
+              submissionDeadline={state.requirementsFile?.tender.submission_deadline}
+              isExpired={status === 'expired'}
+              isNeeded={status === 'expiry_needed'}
+              label={t('expiry_date')}
             />
           </div>
         )}
